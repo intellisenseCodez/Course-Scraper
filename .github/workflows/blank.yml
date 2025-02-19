@@ -25,7 +25,7 @@ jobs:
 
     - name: Run Jupyter Notebook
       run: |
-        papermill bsc_course_links.ipynb output.ipynb
+        papermill course_scraper.ipynb output.ipynb
 
     - name: Extract Data and Save CSV
       run: |
