@@ -1,0 +1,48 @@
+name: Run Jupyter Notebook
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:  # Allows manual trigger
+
+jobs:
+  run-notebook:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+
+    - name: Install Dependencies
+      run: |
+        pip install -r requirements.txt
+        pip install nbconvert papermill
+
+    - name: Run Jupyter Notebook
+      run: |
+        papermill bsc_course_links.ipynb output.ipynb
+
+    - name: Extract Data and Save CSV
+      run: |
+        jupyter nbconvert --to notebook --execute output.ipynb
+        python -c "import pandas as pd; df = pd.read_csv('scraped_bsc_courses.csv'); df.to_csv('processed_courses.csv', index=False)"
+
+    - name: Upload CSV as Artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: extracted-data
+        path: processed_courses.csv
+
+    - name: Commit and Push CSV
+      run: |
+        git config --global user.name 'github-actions'
+        git config --global user.email 'github-actions@github.com'
+        git add processed_courses.csv
+        git commit -m 'Update extracted data'
+        git push
