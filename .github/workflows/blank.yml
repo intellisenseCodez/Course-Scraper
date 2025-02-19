@@ -34,10 +34,11 @@ jobs:
         python -c "import pandas as pd; df = pd.read_csv('scraped_bsc_courses.csv'); df.to_csv('processed_courses.csv', index=False)"
 
     - name: Upload CSV as Artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: extracted-data
         path: processed_courses.csv
+
 
     - name: Commit and Push CSV
       run: |
