@@ -24,12 +24,23 @@ jobs:
     - name: Install dependencies
       run: |
         pip install -r requirements.txt
-        pip install jupyter-book
+        pip install requests pandas matplotlib jupyter jupyterlab
+
         
     # Build the book
-    - name: Build the book
+    - name: Run Script and Update Plot
       run: |
-        jupyter-book build --pdf
+        jupyter nbconvert --to script course_scraper.ipynb
+        python course_scraper.py
+
+
+    - name: Commit and Push Changes
+      run: |
+          git config --local user.email "actions@github.com"
+          git config --local user.name "GitHub Actions"
+          git add scraped_bsc_course.csv weather_locations.png
+          git commit -m "Updated courses with GitHub Actions"
+          git push origin main
 
   
 
