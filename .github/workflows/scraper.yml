@@ -55,7 +55,8 @@ jobs:
           run: |
             git add ./*
             git diff --quiet && git diff --staged --quiet || git commit -m "Add CSV file"
-            git push origin ${{ github.ref }}
+            git pull --rebase origin main  # Pull latest changes safely
+            git push origin main
 
 
    
