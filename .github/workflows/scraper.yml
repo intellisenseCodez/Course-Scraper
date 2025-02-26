@@ -1,4 +1,4 @@
-name: Run Jupyter Notebook
+name: Run Jupyter Notebook and Save Data
 
 on:
   push:
@@ -7,31 +7,52 @@ on:
   workflow_dispatch:  # Allows manual trigger
 
 jobs:
-  run-notebook:
+  run-notebook-and-commit-csv:
     runs-on: ubuntu-latest
+    permissions:                # Job-level permissions configuration starts here
+      contents: write           # 'write' access to repository contents
+
 
     steps:
-    - id: repo 
-      name: Checkout Repository
-      uses: actions/checkout@v3
+      # Step 1: Checkout the repository
+      - id: Checkout the repository
+        name: Checkout repository
+        uses: actions/checkout@v3
 
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.9'
-        cache: 'pip'
+      # Step 2: Setup Python environment
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9' # Install the Python version needed
+          cache: 'pip'
 
-    - name: Install dependencies
-      run: |
-        pip install -r requirements.txt
-        pip install requests pandas matplotlib jupyter jupyterlab
-
+      # Step 3: Install dependencies
+      - name: Install dependencies
+        run: |
+          pip install requests pandas jupyter jupyterlab
+          
         
-    # Build the book
-    - name: convert notebook to script and run
-      run: |
-        jupyter nbconvert --to script course_scraper.ipynb
-        python course_scraper.py
+      # Step 4: Build and run the script
+      - name: convert notebook to script and run
+        run: |
+          jupyter nbconvert --to script course_scraper.ipynb
+          python course_scraper.py
+
+
+      # Step 5: Commit and push the generated CSV file if there are changes
+      - name: Commit files
+        run: |
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add ./*
+          git commit -a -m "Add changes"
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
+          directory: .
+          force: true
 
 
    
