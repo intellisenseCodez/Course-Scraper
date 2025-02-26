@@ -1,7 +1,7 @@
 name: Run Jupyter Notebook and Save Data
 
 on:
-  [push]:
+  push:
     branches:
       - main
       
