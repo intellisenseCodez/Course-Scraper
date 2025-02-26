@@ -41,10 +41,7 @@ jobs:
     needs: run-notebook-and-scrape
     runs-on: ubuntu-latest
     steps:
-    
-        - name: Checkout repository
-          uses: actions/checkout@v3
-          
+
         # Step 5: Commit and push the generated CSV file if there are changes
         - name: Configure git
           run: |
