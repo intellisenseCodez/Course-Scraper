@@ -28,19 +28,11 @@ jobs:
 
         
     # Build the book
-    - name: Run Script and Update Plot
+    - name: convert notebook to script and run
       run: |
         jupyter nbconvert --to script course_scraper.ipynb
         python course_scraper.py
 
 
-    # - name: Commit and Push Changes
-    #   run: |
-    #       git config --local user.email "actions@github.com"
-    #       git config --local user.name "GitHub Actions"
-    #       git add scraped_bsc_course.csv weather_locations.png
-    #       git commit -m "Updated courses with GitHub Actions"
-    #       git push origin main
-
-  
+   
 
