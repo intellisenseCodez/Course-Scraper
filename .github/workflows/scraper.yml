@@ -36,27 +36,27 @@ jobs:
           jupyter nbconvert --to script course_scraper.ipynb
           python course_scraper.py
 
-  commit-scraped-data-to-csv:
-    name: Commit Scraped Data to CSV
-    needs: run-notebook-and-scrape
-    runs-on: ubuntu-latest
-    steps:
+  # commit-scraped-data-to-csv:
+  #   name: Commit Scraped Data to CSV
+  #   needs: run-notebook-and-scrape
+  #   runs-on: ubuntu-latest
+  #   steps:
 
-        # Step 5: Commit and push the generated CSV file if there are changes
-        - name: Commit files
-          run: |
-            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git config user.name "github-actions[bot]"
-            git add ./*
-            git commit -a -m "Add changes"
-            
-        - name: Push changes
-          uses: ad-m/github-push-action@master
-          with:
-            github_token: ${{ secrets.GITHUB_TOKEN }}
-            branch: ${{ github.ref }}
-            directory: .
-            force: true
+      # Step 5: Commit and push the generated CSV file if there are changes
+      - name: Commit files
+        run: |
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          git add ./*
+          git commit -a -m "Add changes"
+          
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
+          directory: .
+          force: true
 
    
 
