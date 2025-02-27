@@ -125,7 +125,7 @@ df[0:10]
 
 
 # Iterate through the course URLs and scrape data
-for index, row in df[0:20].iterrows():
+for index, row in df[0:500].iterrows():
     course_url = row["course_links"]
     print(f"Scraping: {course_url}")
     data = scrape_course(course_url)
